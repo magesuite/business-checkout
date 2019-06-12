@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var $block \MageSuite\BusinessCheckout\Block\Address\Edit\Field\CustomerType
+ */
+$selectedValue = $block->getCustomerTypeValue();
+?>
+
+<div class="cs-input | cs-form__field cs-form__field--type_customer_type | field">
+    <label class="cs-input__label | label" for="customer_type">
+        <span><?= $block->escapeHtml(__('Customer Type')) ?></span>
+    </label>
+
+    <div class="cs-input__control">
+        <select name="customer_type" id="customer_type">
+            <?php
+            foreach($block->getOptions() as $option){
+                $selected = $option['value'] == $selectedValue ? 'selected="selected"' : '';
+                ?><option value="<?= $option['value']; ?>" <?= $selected; ?>><?= $option['label']; ?></option><?php
+            }
+            ?>
+        </select>
+    </div>
+</div>
+
