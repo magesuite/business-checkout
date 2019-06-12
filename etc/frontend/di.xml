@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\Checkout\Block\Onepage">
+        <arguments>
+            <argument name="layoutProcessors" xsi:type="array">
+                <item name="customTypeField" xsi:type="object">MageSuite\BusinessCheckout\Processor\Layout\CustomerTypeField</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Customer\Block\Address\Edit">
+        <plugin name="add_customer_type_to_address_form"
+                type="MageSuite\BusinessCheckout\Plugin\Customer\Block\Address\Edit\AddCustomerTypeToAddressForm"
+                sortOrder="1" />
+    </type>
+
+</config>
