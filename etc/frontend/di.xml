@@ -9,6 +9,14 @@
         </arguments>
     </type>
 
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="business_checkout_config_provider" xsi:type="object">MageSuite\BusinessCheckout\Model\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Customer\Block\Address\Edit">
         <plugin name="add_customer_type_to_address_form"
                 type="MageSuite\BusinessCheckout\Plugin\Customer\Block\Address\Edit\AddCustomerTypeToAddressForm"

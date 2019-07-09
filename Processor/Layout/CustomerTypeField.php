@@ -9,19 +9,29 @@ class CustomerTypeField extends \Magento\Checkout\Model\Layout\AbstractTotalsPro
      */
     protected $customerTypeSource;
 
+    /**
+     * @var \MageSuite\BusinessCheckout\Helper\Configuration
+     */
+    protected $configuration;
+
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType $customerTypeSource
+        \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType $customerTypeSource,
+        \MageSuite\BusinessCheckout\Helper\Configuration $configuration
     )
     {
         parent::__construct($scopeConfig);
 
         $this->customerTypeSource = $customerTypeSource;
-
+        $this->configuration = $configuration;
     }
 
     public function process($jsLayout)
     {
+        if(!$this->configuration->isEnabled()){
+            return $jsLayout;
+        }
+
         $customField = $this->getExtensionAttributeFieldAsArray();
 
         $newJsLayout = [
