@@ -5,39 +5,49 @@ define([
 ], function ($, _, ko) {
     'use strict';
 
-    var isBusinessCheckout = Boolean(window.checkoutConfig.businessCheckoutEnabled === '1');
-
-    function toggleFields(fieldset) {
-        var companyField = _.findWhere(fieldset.elems(), {index: 'company'});
-        var vatField = _.findWhere(fieldset.elems(), {index: 'vat_id'});
-        companyField.visible(isBusinessCheckout);
-        vatField.visible(isBusinessCheckout);
-    }
+    var isEnabled = Boolean(window.checkoutConfig.business_checkout_config === '1');
 
     return function(Shipping) {
-        return Shipping.extend({
+        return isEnabled ? Shipping.extend({
             initialize: function() {
                 this._super();
+                
+                var businessOnlyFields = ['company','vat_id'];
+                doWhenFieldsReady(this.elems,'shipping-address-fieldset', handler);
 
-                var subscription = this.elems.subscribe(function(elems) {
-                    var lastItem = elems[elems.length-1];
-                    if (lastItem.index === 'shipping-address-fieldset') {
-                        toggleFields(lastItem);
+                function handler(fieldset) {
+                    var customerType = _.findWhere(fieldset.elems(), {index: 'customer_type'});
+                    toggleFields(fieldset, customerType.value());
+                    customerType.value.subscribe(function(value) {
+                        toggleFields(fieldset, value);
+                     });
+                }
+            
+                function toggleFields(fieldset, value) {
+                    var isBusinessCheckout;
 
-                        $(".cs-checkout").on("change", "#shipping-new-address-form select", function( event ) {
-                            var selectedOption = $("option:selected", this).text(); 
-                            if (selectedOption === 'Private') { 
-                                isBusinessCheckout = false;
-                            } else if (selectedOption === 'Business') {
-                                isBusinessCheckout = true;
-                            }
-                            toggleFields(lastItem)
-                        });
-                        
-                        subscription.dispose();
+                    if (value === 'private') { 
+                        isBusinessCheckout = false;
+                    } else if (value === 'business') {
+                        isBusinessCheckout = true;
                     }
-                });
+            
+                    businessOnlyFields.forEach(function(fieldIndex) {
+                        var field = _.findWhere(fieldset.elems(), {index: fieldIndex});
+                        field.visible(isBusinessCheckout);
+                    });
+                }
+            
+                function doWhenFieldsReady(koElems, fieldIndex, callback) {
+                    var subscription = koElems.subscribe(function(elems) {
+                        var lastItem = elems[elems.length-1];
+                        if (lastItem.index === fieldIndex) {
+                            callback(lastItem);
+                            subscription.dispose();
+                        }
+                    });
+                }
             }    
-        });
+        }) : Shipping;
     };
 });
