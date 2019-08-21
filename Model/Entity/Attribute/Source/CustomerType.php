@@ -4,7 +4,6 @@ namespace MageSuite\BusinessCheckout\Model\Entity\Attribute\Source;
 
 class CustomerType extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
 {
-    const ATTRIBUTE_CODE = 'customer_type';
     const PRIVATE = 'private';
     const BUSINESS = 'business';
 

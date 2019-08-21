@@ -46,7 +46,7 @@ class CustomerTypeField extends \Magento\Checkout\Model\Layout\AbstractTotalsPro
                                             'children' => [
                                                 'shipping-address-fieldset' => [
                                                     'children' => [
-                                                        \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE => $customField
+                                                        \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE => $customField
                                                     ]
                                                 ]
                                             ]
@@ -74,7 +74,7 @@ class CustomerTypeField extends \Magento\Checkout\Model\Layout\AbstractTotalsPro
                 'template' => 'ui/form/field',
                 'elementTmpl' => 'ui/form/element/select',
             ],
-            'dataScope' => 'shippingAddress.custom_attributes.' . \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE,
+            'dataScope' => 'shippingAddress.custom_attributes.' . \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE,
             'label' => 'Customer Type',
             'provider' => 'checkoutProvider',
             'sortOrder' => 5,

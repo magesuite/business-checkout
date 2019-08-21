@@ -5,6 +5,7 @@ namespace MageSuite\BusinessCheckout\Helper;
 class Configuration extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const XML_PATH_BUSINESS_CHECKOUT_CONFIGURATION = 'business_checkout/general';
+    const CUSTOMER_TYPE_ATTRIBUTE = 'customer_type';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="extra_customer_info">
+            <block class="MageSuite\BusinessCheckout\Block\Adminhtml\Sales\Order\View\CustomerType" name="customer_type" template="customer_type.phtml" />
+        </referenceContainer>
+    </body>
+</page>

@@ -42,10 +42,10 @@ class InstallData implements \Magento\Framework\Setup\InstallDataInterface
         \Magento\Framework\Setup\ModuleContextInterface $context
     )
     {
-        if (!$this->eavSetup->getAttributeId(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE)) {
+        if (!$this->eavSetup->getAttributeId(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE)) {
             $this->eavSetup->addAttribute(
                 \Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS,
-                \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE,
+                \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE,
                 [
                     'group' => 'General',
                     'type' => 'varchar',
@@ -63,7 +63,7 @@ class InstallData implements \Magento\Framework\Setup\InstallDataInterface
                 ]
             );
 
-            $attribute = $this->eavConfig->getAttribute(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE);
+            $attribute = $this->eavConfig->getAttribute(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE);
             $attribute->setData(
                 'used_in_forms',
                 [
