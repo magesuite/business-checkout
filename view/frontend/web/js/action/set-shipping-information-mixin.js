@@ -13,12 +13,16 @@ define([
                 shippingAddress['extension_attributes'] = {};
             }
 
-            if (shippingAddress.customAttributes !== undefined && shippingAddress.customAttributes.customer_type !== undefined) {
-                if (shippingAddress.customAttributes.customer_type.value !== undefined) {
-                    shippingAddress['extension_attributes']['customer_type'] = shippingAddress.customAttributes['customer_type']['value'];
-                }else{
-                    shippingAddress['extension_attributes']['customer_type'] = shippingAddress.customAttributes['customer_type'];
-                }
+            if (shippingAddress.customAttributes !== undefined) {
+                $.each(shippingAddress.customAttributes, function (key, value) {
+
+                    if($.isPlainObject(value)){
+                        key = value['attribute_code'];
+                        value = value['value'];
+                    }
+
+                    shippingAddress['extension_attributes'][key] = value;
+                });
             }
 
             return originalAction();

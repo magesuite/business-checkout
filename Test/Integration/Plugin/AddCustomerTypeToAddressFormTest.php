@@ -61,6 +61,7 @@ class AddCustomerTypeToAddressFormTest extends \Magento\TestFramework\TestCase\A
     }
 
     /**
+     * @magentoConfigFixture default_store business_checkout/general/is_enabled 1
      * @magentoDataFixture Magento/Customer/_files/customer.php
      * @magentoDataFixture Magento/Customer/_files/customer_address.php
      */
@@ -73,7 +74,7 @@ class AddCustomerTypeToAddressFormTest extends \Magento\TestFramework\TestCase\A
 
         $body = $this->getResponse()->getBody();
 
-        $this->assertContains(sprintf('id="%s"', \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE), $body);
+        $this->assertContains(sprintf('id="%s"', \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE), $body);
         $this->assertContains(sprintf('value="%s"', \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::BUSINESS), $body);
     }
 
@@ -85,10 +86,10 @@ class AddCustomerTypeToAddressFormTest extends \Magento\TestFramework\TestCase\A
         $updatedAddressData = $this->addressFactory->create()
             ->setId(1)
             ->setCustomerId($this->customerRegistry->retrieveByEmail('customer@example.com')->getId())
-            ->setCustomAttribute(\MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE, \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::BUSINESS);
+            ->setCustomAttribute(\MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE, \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::BUSINESS);
 
         $updatedAddressData = $this->addressModel->updateData($updatedAddressData)->getDataModel();
-        $customerTypeAttribute = $updatedAddressData->getCustomAttribute(\MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE);
+        $customerTypeAttribute = $updatedAddressData->getCustomAttribute(\MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE);
 
         $this->assertEquals(\MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::BUSINESS, $customerTypeAttribute->getValue());
     }

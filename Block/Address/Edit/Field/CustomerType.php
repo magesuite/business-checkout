@@ -34,7 +34,7 @@ class CustomerType extends \Magento\Framework\View\Element\Template
     public function getCustomerTypeValue()
     {
         $address = $this->getAddress();
-        $customerType = $address->getCustomAttribute(\MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::ATTRIBUTE_CODE);
+        $customerType = $address->getCustomAttribute(\MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE);
 
         if (!$customerType instanceof \Magento\Framework\Api\AttributeInterface) {
             return null;

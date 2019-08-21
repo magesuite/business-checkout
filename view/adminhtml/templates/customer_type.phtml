@@ -1,0 +1,12 @@
+<?php
+/* @var \MageSuite\BusinessCheckout\Block\Adminhtml\Sales\Order\View\CustomerType $block */
+$customerType = $block->getCustomerType();
+
+if($customerType){ ?>
+
+<tr>
+    <th><?php echo __('Customer Type'); ?></th>
+    <td><?php echo $customerType; ?></td>
+</tr>
+
+<?php } ?>
