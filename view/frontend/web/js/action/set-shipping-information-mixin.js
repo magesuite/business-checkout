@@ -9,20 +9,16 @@ define([
 
         return wrapper.wrap(setShippingInformationAction, function (originalAction) {
             var shippingAddress = quote.shippingAddress();
-            if (shippingAddress['extension_attributes'] === undefined) {
-                shippingAddress['extension_attributes'] = {};
-            }
-
-            if (shippingAddress.customAttributes !== undefined) {
-                $.each(shippingAddress.customAttributes, function (key, value) {
-
-                    if($.isPlainObject(value)){
-                        key = value['attribute_code'];
-                        value = value['value'];
+            
+            if (shippingAddress.customAttributes &&
+                shippingAddress.customAttributes.customer_type) {
+                shippingAddress.extension_attributes = $.extend(
+                    {},
+                    shippingAddress.extension_attributes,
+                    {
+                        customer_type: shippingAddress.customAttributes.customer_type
                     }
-
-                    shippingAddress['extension_attributes'][key] = value;
-                });
+                );
             }
 
             return originalAction();
