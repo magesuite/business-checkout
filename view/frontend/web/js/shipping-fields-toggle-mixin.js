@@ -1,53 +1,42 @@
-define([
-    'jquery',
-    'underscore',
-    'ko',
-], function ($, _, ko) {
+define(['uiRegistry'], function (registry) {
     'use strict';
 
-    var isEnabled = Boolean(window.checkoutConfig.business_checkout_config === '1');
+    var isEnabled = Boolean(
+        window.checkoutConfig.business_checkout_config === '1'
+    );
 
-    return function(Shipping) {
-        return isEnabled ? Shipping.extend({
-            initialize: function() {
-                this._super();
-                
-                var businessOnlyFields = ['company','vat_id'];
-                doWhenFieldsReady(this.elems,'shipping-address-fieldset', handler);
+    return function (Shipping) {
+        return isEnabled
+            ? Shipping.extend({
+                  initialize: function () {
+                      this._super();
 
-                function handler(fieldset) {
-                    var customerType = _.findWhere(fieldset.elems(), {index: 'customer_type'});
-                    toggleFields(fieldset, customerType.value());
-                    customerType.value.subscribe(function(value) {
-                        toggleFields(fieldset, value);
-                     });
-                }
-            
-                function toggleFields(fieldset, value) {
-                    var isBusinessCheckout;
+                      var fieldsetName =
+                          'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset';
+                      var businessOnlyFields = ['company', 'vat_id'];
+                      var toggleFields = function (fieldValue) {
+                          var isBusinessCheckout = fieldValue === 'business';
 
-                    if (value === 'private') { 
-                        isBusinessCheckout = false;
-                    } else if (value === 'business') {
-                        isBusinessCheckout = true;
-                    }
-            
-                    businessOnlyFields.forEach(function(fieldIndex) {
-                        var field = _.findWhere(fieldset.elems(), {index: fieldIndex});
-                        field.visible(isBusinessCheckout);
-                    });
-                }
-            
-                function doWhenFieldsReady(koElems, fieldIndex, callback) {
-                    var subscription = koElems.subscribe(function(elems) {
-                        var lastItem = elems[elems.length-1];
-                        if (lastItem.index === fieldIndex) {
-                            callback(lastItem);
-                            subscription.dispose();
-                        }
-                    });
-                }
-            }    
-        }) : Shipping;
+                          businessOnlyFields.forEach(function (fieldName) {
+                              registry.get(
+                                  fieldsetName + '.' + fieldName,
+                                  function (field) {
+                                      field.visible(isBusinessCheckout);
+                                  }
+                              );
+                          });
+                      };
+
+                      registry.get(fieldsetName + '.customer_type', function (
+                          customerType
+                      ) {
+                          toggleFields(customerType.value());
+                          customerType.value.subscribe(function (value) {
+                              toggleFields(value);
+                          });
+                      });
+                  },
+              })
+            : Shipping;
     };
 });
