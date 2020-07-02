@@ -75,7 +75,7 @@ class CustomerTypeField extends \Magento\Checkout\Model\Layout\AbstractTotalsPro
                 'elementTmpl' => 'ui/form/element/select',
             ],
             'dataScope' => 'shippingAddress.custom_attributes.' . \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE,
-            'label' => 'Customer Type',
+            'label' => __('Customer Type'),
             'provider' => 'checkoutProvider',
             'sortOrder' => 5,
             'validation' => [

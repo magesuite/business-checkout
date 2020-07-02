@@ -11,8 +11,8 @@ class CustomerType extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSo
     {
         if ($this->_options === null) {
             $this->_options = [
-                ['value' => self::PRIVATE, 'label' => 'Private'],
-                ['value' => self::BUSINESS, 'label' => 'Business']
+                ['value' => self::PRIVATE, 'label' => __('Private')],
+                ['value' => self::BUSINESS, 'label' => __('Business')]
             ];
         }
         return $this->_options;

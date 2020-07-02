@@ -15,7 +15,7 @@ $selectedValue = $block->getCustomerTypeValue();
             <?php
             foreach($block->getOptions() as $option){
                 $selected = $option['value'] == $selectedValue ? 'selected="selected"' : '';
-                ?><option value="<?= $option['value']; ?>" <?= $selected; ?>><?= $option['label']; ?></option><?php
+                ?><option value="<?= $option['value']; ?>" <?= $selected; ?>><?= __($option['label']); ?></option><?php
             }
             ?>
         </select>
