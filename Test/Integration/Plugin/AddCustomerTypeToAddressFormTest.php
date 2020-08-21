@@ -43,7 +43,7 @@ class AddCustomerTypeToAddressFormTest extends \Magento\TestFramework\TestCase\A
      */
     protected $session;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
