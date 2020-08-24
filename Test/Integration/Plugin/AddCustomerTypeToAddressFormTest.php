@@ -74,8 +74,10 @@ class AddCustomerTypeToAddressFormTest extends \Magento\TestFramework\TestCase\A
 
         $body = $this->getResponse()->getBody();
 
-        $this->assertContains(sprintf('id="%s"', \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE), $body);
-        $this->assertContains(sprintf('value="%s"', \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::BUSINESS), $body);
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains(sprintf('id="%s"', \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE), $body);
+        $this->$assertContains(sprintf('value="%s"', \MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::BUSINESS), $body);
     }
 
     /**
