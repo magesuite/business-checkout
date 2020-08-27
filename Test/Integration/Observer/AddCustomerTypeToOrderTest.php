@@ -8,7 +8,7 @@ namespace MageSuite\BusinessCheckout\Test\Integration\Observer;
 class AddCustomerTypeToOrderTest extends \PHPUnit\Framework\TestCase
 {
     const DEFAULT_STORE_ID = 1;
-    
+
     /**
      * @var \Magento\TestFramework\ObjectManager
      */
@@ -44,7 +44,7 @@ class AddCustomerTypeToOrderTest extends \PHPUnit\Framework\TestCase
      */
     protected $orderRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
 
