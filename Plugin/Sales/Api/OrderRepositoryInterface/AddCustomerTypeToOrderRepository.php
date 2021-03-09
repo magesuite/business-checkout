@@ -1,4 +1,5 @@
 <?php
+
 namespace MageSuite\BusinessCheckout\Plugin\Sales\Api\OrderRepositoryInterface;
 
 class AddCustomerTypeToOrderRepository
@@ -13,13 +14,20 @@ class AddCustomerTypeToOrderRepository
      */
     protected $orderItemExtensionFactory;
 
+    /**
+     * @var \Magento\Customer\Api\AddressRepositoryInterface
+     */
+    protected $addressRepository;
+
     public function __construct(
         \Magento\Sales\Api\Data\OrderExtensionFactory $orderExtensionFactory,
-        \Magento\Sales\Api\Data\OrderItemExtensionFactory $orderItemExtensionFactory
+        \Magento\Sales\Api\Data\OrderItemExtensionFactory $orderItemExtensionFactory,
+        \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
     )
     {
         $this->orderExtensionFactory = $orderExtensionFactory;
         $this->orderItemExtensionFactory = $orderItemExtensionFactory;
+        $this->addressRepository = $addressRepository;
     }
 
 
@@ -54,5 +62,46 @@ class AddCustomerTypeToOrderRepository
         }
 
         return $searchResult;
+    }
+
+    public function afterSave(
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Magento\Sales\Api\Data\OrderInterface $result,
+        \Magento\Sales\Api\Data\OrderInterface $entity
+    ) {
+        if (!$result->getCustomerId()) {
+            return $result;
+        }
+
+        $shippingAddress = $result->getShippingAddress();
+
+        if (!$shippingAddress) {
+            return $result;
+        }
+
+        $orderCustomerType = $result->getData(\MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE);
+
+        if (!$orderCustomerType) {
+            return $result;
+        }
+
+        $addressId = $shippingAddress->getCustomerAddressId();
+
+        try {
+            $address = $this->addressRepository->getById($addressId);
+            $customerType = $address->getCustomAttribute(\MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE);
+
+            if (!$customerType) {
+                $address->setCustomAttribute(
+                    \MageSuite\BusinessCheckout\Helper\Configuration::CUSTOMER_TYPE_ATTRIBUTE,
+                    $orderCustomerType
+                );
+                $this->addressRepository->save($address);
+            }
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            // do nothing
+        }
+
+        return $result;
     }
 }
