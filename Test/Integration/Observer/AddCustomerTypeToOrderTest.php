@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace MageSuite\BusinessCheckout\Test\Integration\Observer;
 
 /**
@@ -7,42 +10,15 @@ namespace MageSuite\BusinessCheckout\Test\Integration\Observer;
  */
 class AddCustomerTypeToOrderTest extends \PHPUnit\Framework\TestCase
 {
-    const DEFAULT_STORE_ID = 1;
+    protected const DEFAULT_STORE_ID = 1;
 
-    /**
-     * @var \Magento\TestFramework\ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $storeManager;
-
-    /**
-     * @var \Magento\Quote\Api\CartManagementInterface
-     */
-    protected $cartManagement;
-
-    /**
-     * @var \Magento\Quote\Api\CartRepositoryInterface
-     */
-    protected $cartRepository;
-
-    /**
-     * @var \Magento\Quote\Model\QuoteManagement
-     */
-    protected $quoteManagement;
-
-    /**
-     * @var \Magento\Catalog\Api\ProductRepositoryInterface
-     */
-    protected $productRepository;
-
-    /**
-     * @var \Magento\Sales\Api\OrderRepositoryInterface
-     */
-    protected $orderRepository;
+    protected ?\Magento\TestFramework\ObjectManager $objectManager;
+    protected ?\Magento\Store\Model\StoreManagerInterface $storeManager;
+    protected ?\Magento\Quote\Api\CartManagementInterface $cartManagement;
+    protected ?\Magento\Quote\Api\CartRepositoryInterface $cartRepository;
+    protected ?\Magento\Quote\Model\QuoteManagement $quoteManagement;
+    protected ?\Magento\Catalog\Api\ProductRepositoryInterface $productRepository;
+    protected ?\Magento\Sales\Api\OrderRepositoryInterface $orderRepository;
 
     public function setUp(): void
     {
@@ -56,18 +32,13 @@ class AddCustomerTypeToOrderTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public static function loadProducts()
-    {
-        require __DIR__ . '/../_files/products.php';
-    }
-
     /**
      * @magentoAppArea frontend
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
-     * @magentoDataFixture loadProducts
+     * @magentoDataFixture MageSuite_BusinessCheckout::Test/Integration/_files/products.php
      */
-    public function testItDoesntAddCustomerTypeWhenModuleIsDisabled()
+    public function testItDoesntAddCustomerTypeWhenModuleIsDisabled(): void
     {
         $qty = 1;
         $product = $this->productRepository->get('product');
@@ -85,9 +56,9 @@ class AddCustomerTypeToOrderTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDbIsolation enabled
      * @magentoConfigFixture default_store business_checkout/general/is_enabled 1
-     * @magentoDataFixture loadProducts
+     * @magentoDataFixture MageSuite_BusinessCheckout::Test/Integration/_files/products.php
      */
-    public function testItAddsCustomerTypeFlagCorrectlyToOrder()
+    public function testItAddsCustomerTypeFlagCorrectlyToOrder(): void
     {
         $qty = 1;
         $product = $this->productRepository->get('product');
@@ -100,7 +71,7 @@ class AddCustomerTypeToOrderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(\MageSuite\BusinessCheckout\Model\Entity\Attribute\Source\CustomerType::BUSINESS, $order->getCustomerType());
     }
 
-    private function prepareQuote($product, $qty)
+    private function prepareQuote(\Magento\Catalog\Api\Data\ProductInterface $product, int $qty): \Magento\Quote\Api\Data\CartInterface
     {
         $addressData = [
             'region' => 'BE',
