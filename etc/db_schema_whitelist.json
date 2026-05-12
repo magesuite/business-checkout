@@ -1,0 +1,12 @@
+{
+    "quote": {
+        "column": {
+            "customer_type": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "customer_type": true
+        }
+    }
+}
